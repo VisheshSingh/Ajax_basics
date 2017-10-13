@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ajax-2 Local JSON</title>
+</head>
+<body>
+    <button id="B-user">Get User</button>
+    <button id="B-users">Get Users</button>
+
+    <h1>User</h1>
+    <div id="user"></div>
+    <h1>Users</h1>
+    <div id="users"></div>
+
+    <script>
+        document.getElementById('B-user').addEventListener('click', loadJson);
+        document.getElementById('B-users').addEventListener('click', loadJsons);
+
+        function loadJson() {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', 'user.json', true);
+
+            xhr.onload = function() {
+                if(xhr.status == 200) {
+                   //console.log(this.response);
+                      var json = JSON.parse(this.response);
+
+                      var output = '';
+                      output += '<ul>' +
+                      '<li> NAME: '+json.name+'</li>' +
+                      '<li> EMAIL: '+json.email+'</li>' +
+                      '</ul>';
+
+                      document.getElementById('user').innerHTML = output;
+                } else if(this.status == 404) {
+                    document.getElementById('para').innerHTML = 'NOT FOUND';
+                }
+            }
+
+            xhr.onerror = function() {
+                console.log('ERROR...');
+            }
+
+            xhr.send();
+        }
+
+        function loadJsons() {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', 'users.json', true);
+
+            xhr.onload = function() {
+                if(xhr.status == 200) {
+                   //console.log(this.response);
+                      var users = JSON.parse(this.response);
+                      var output = '';
+                    for(var i in users) {
+                      
+                      output += '<ul>' +
+                      '<li> NAME: '+users[i].name+'</li>' +
+                      '<li> EMAIL: '+users[i].email+'</li>' +
+                      '</ul>';
+                    }
+
+                      document.getElementById('users').innerHTML = output;
+                } else if(this.status == 404) {
+                    document.getElementById('para').innerHTML = 'NOT FOUND';
+                }
+            }
+
+            xhr.onerror = function() {
+                console.log('ERROR...');
+            }
+
+            xhr.send();
+        }
+    </script>
+</body>
+</html>
